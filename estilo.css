@@ -1,0 +1,248 @@
+/* ============================================================================
+   ATO — painel web
+
+   Fundo escuro de propósito: este painel é olhado de relance, num cômodo
+   com pouca luz, ao lado de um aquário iluminado. E ele espelha um painel
+   físico que também é escuro, com LEDs coloridos — as mesmas cores aqui
+   significam as mesmas coisas lá.
+   ============================================================================ */
+:root{
+  --fundo:    #0E1714;
+  --superf:   #152220;
+  --superf2:  #1C2B28;
+  --borda:    #263734;
+  --linha:    #263734;
+  --tinta:    #E8F0EC;
+  --tinta2:   #A9BDB6;
+  --fraco:    #70877F;
+  --verde:    #3FA87C;
+  --agua:     #35B3B3;
+  --cobre:    #D98A4E;
+  --amarelo:  #E0B13D;
+  --vermelho: #E0604C;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --gut: 18px;
+}
+*{ box-sizing:border-box }
+/* O atributo hidden perde para qualquer regra de display com classe. Sem
+   esta linha a tela de login continua desenhada por baixo do painel. */
+[hidden]{ display:none !important }
+html,body{ margin:0; padding:0 }
+body{
+  background:var(--fundo); color:var(--tinta);
+  font:400 16px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+h1,h2{ margin:0; font-weight:600; letter-spacing:-.01em }
+button{ font:inherit; cursor:pointer }
+
+/* ======================================================== entrar ====== */
+.entrar{
+  min-height:100dvh; display:grid; place-items:center; padding:var(--gut);
+}
+.entrar-caixa{ width:100%; max-width:380px }
+.marca{
+  font:700 13px/1 var(--mono); letter-spacing:.3em; color:var(--verde);
+  margin-bottom:22px;
+}
+.entrar h1{ font-size:26px; line-height:1.2 }
+.entrar .sub{ color:var(--tinta2); font-size:14.5px; margin:12px 0 26px }
+.entrar label{
+  display:block; font:500 12px/1 var(--mono); letter-spacing:.08em;
+  color:var(--fraco); margin-bottom:8px;
+}
+.entrar input{
+  width:100%; padding:13px 14px; font:400 16px var(--sans);
+  background:var(--superf); color:var(--tinta);
+  border:1px solid var(--linha); border-radius:9px;
+}
+.entrar input:focus{ outline:2px solid var(--verde); outline-offset:1px }
+.entrar button{
+  width:100%; margin-top:14px; padding:13px;
+  background:var(--verde); color:#07110D; font-weight:600;
+  border:none; border-radius:9px;
+}
+.entrar button:disabled{ opacity:.5; cursor:default }
+.msg{ font-size:13.5px; color:var(--tinta2); margin-top:16px; min-height:1.2em }
+.msg.erro{ color:var(--vermelho) }
+.msg.ok{ color:var(--verde) }
+
+/* ======================================================== painel ====== */
+#painel{ max-width:880px; margin:0 auto; padding:0 var(--gut) 40px }
+
+.topo{
+  display:flex; align-items:center; gap:14px;
+  padding:16px 0 14px; border-bottom:1px solid var(--linha);
+  position:sticky; top:0; background:var(--fundo); z-index:5;
+}
+.topo-nome{ display:flex; align-items:baseline; gap:10px; min-width:0 }
+.marca-mini{
+  font:700 11px/1 var(--mono); letter-spacing:.26em; color:var(--verde);
+}
+#titulo{ font-size:14.5px; color:var(--tinta2); overflow:hidden;
+         text-overflow:ellipsis; white-space:nowrap }
+.contato{
+  margin-left:auto; display:flex; align-items:center; gap:8px;
+  font:500 12.5px var(--mono); color:var(--fraco);
+}
+.pulso{
+  width:8px; height:8px; border-radius:50%; background:var(--fraco);
+  flex:none;
+}
+.contato.bom   .pulso{ background:var(--verde) }
+.contato.bom   { color:var(--tinta2) }
+.contato.aviso .pulso{ background:var(--amarelo) }
+.contato.aviso { color:var(--amarelo) }
+.contato.grave .pulso{ background:var(--vermelho) }
+.contato.grave { color:var(--vermelho) }
+@media (prefers-reduced-motion:no-preference){
+  .contato.bom .pulso{ animation:bate 3s ease-in-out infinite }
+}
+@keyframes bate{ 0%,100%{opacity:1} 50%{opacity:.35} }
+.sair{
+  background:none; border:1px solid var(--linha); color:var(--fraco);
+  font:500 12px var(--mono); padding:6px 11px; border-radius:7px;
+}
+.sair:hover{ color:var(--tinta); border-color:var(--fraco) }
+
+.aviso{
+  margin:16px 0 0; padding:13px 15px; border-radius:10px;
+  background:#2A1613; border:1px solid var(--vermelho);
+  color:#FFD9D1; font-size:14.5px;
+}
+
+/* --------------------------------------------------------- sump ------ */
+.hero{
+  display:grid; grid-template-columns:minmax(250px,300px) 1fr; gap:30px;
+  align-items:center; padding:26px 0;
+  border-bottom:1px solid var(--linha);
+}
+.sump{ margin:0; display:flex; gap:14px; align-items:center }
+.sump svg{ width:124px; height:176px; flex:none }
+.marcas line{ stroke:var(--fraco); stroke-width:1; stroke-dasharray:3 3 }
+.marcas text{ fill:var(--fraco); font:500 9px var(--mono) }
+.marcas .hh line{ stroke:var(--vermelho); stroke-dasharray:none }
+.marcas .hh text{ fill:var(--vermelho) }
+.sump figcaption{ display:flex; flex-direction:column; line-height:1;
+                  min-width:0 }
+.sump .linha-n{ display:flex; align-items:baseline; gap:4px }
+.sump .n{ font:600 42px var(--mono); letter-spacing:-.03em }
+.sump .u{ font:500 16px var(--mono); color:var(--fraco) }
+.sump .rot{ font-size:13px; color:var(--tinta2); margin-top:12px;
+             white-space:nowrap }
+.sump .bruta{ font:400 11.5px var(--mono); color:var(--fraco); margin-top:5px;
+               white-space:nowrap }
+
+.bomba-estado{
+  display:flex; align-items:center; gap:11px;
+  font:600 17px var(--sans);
+}
+.mini{ display:flex; gap:22px; margin:18px 0 0; flex-wrap:wrap }
+.mini div{ margin:0 }
+.mini dt{ font:500 10.5px/1 var(--mono); letter-spacing:.06em;
+          color:var(--fraco); text-transform:uppercase }
+.mini dd{ margin:6px 0 0; font:500 15px var(--mono); color:var(--tinta2) }
+
+/* lâmpadas, iguais às do painel físico */
+.lamp{
+  width:13px; height:13px; border-radius:50%; flex:none;
+  background:#22312E; border:1px solid #30423E;
+}
+.lamp.on-verde   { background:var(--verde);    border-color:var(--verde);
+                   box-shadow:0 0 11px -1px var(--verde) }
+.lamp.on-agua    { background:var(--agua);     border-color:var(--agua);
+                   box-shadow:0 0 11px -1px var(--agua) }
+.lamp.on-cobre   { background:var(--cobre);    border-color:var(--cobre);
+                   box-shadow:0 0 11px -1px var(--cobre) }
+.lamp.on-amarelo { background:var(--amarelo);  border-color:var(--amarelo);
+                   box-shadow:0 0 11px -1px var(--amarelo) }
+.lamp.on-verm    { background:var(--vermelho); border-color:var(--vermelho);
+                   box-shadow:0 0 11px -1px var(--vermelho) }
+
+/* ----------------------------------------------------- leituras ----- */
+.leituras{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border-bottom:1px solid var(--linha);
+}
+.leitura{ padding:22px 20px 20px }
+.leitura + .leitura{ border-left:1px solid var(--linha) }
+.leitura h2{
+  font:500 10.5px/1 var(--mono); letter-spacing:.09em; color:var(--fraco);
+  text-transform:uppercase;
+}
+.valor{ margin:13px 0 0; display:flex; align-items:baseline; gap:4px }
+.valor span:first-child{ font:600 29px var(--mono); letter-spacing:-.02em }
+.valor .u{ font:500 13px var(--mono); color:var(--fraco) }
+.faixa{
+  position:relative; height:3px; border-radius:2px; margin:14px 0 9px;
+  background:linear-gradient(90deg,var(--linha),var(--superf2),var(--linha));
+}
+.faixa .marca{
+  position:absolute; top:-3px; width:3px; height:9px; border-radius:2px;
+  background:var(--verde); left:50%; transition:left .5s ease;
+}
+.faixa .marca.fora{ background:var(--vermelho) }
+.nota{ margin:0; font:400 11.5px var(--mono); color:var(--fraco) }
+.leitura.ruim .valor span:first-child{ color:var(--vermelho) }
+
+.lampadas{
+  display:flex; flex-wrap:wrap; gap:10px 26px; padding:18px 0;
+  border-bottom:1px solid var(--linha);
+}
+.lamp-item{ display:flex; align-items:center; gap:9px;
+            font:400 13px var(--sans); color:var(--tinta2) }
+
+/* ---------------------------------------------------- histórico ----- */
+.historico{ padding:26px 0 10px }
+.hist-topo{ display:flex; align-items:center; gap:14px; flex-wrap:wrap }
+.historico h2, .alarmes h2{ font-size:17px }
+.janelas{ margin-left:auto; display:flex; gap:5px }
+.janelas button{
+  background:none; border:1px solid var(--linha); color:var(--fraco);
+  font:500 12px var(--mono); padding:6px 11px; border-radius:7px;
+}
+.janelas button.sel{
+  color:#07110D; background:var(--tinta2); border-color:var(--tinta2);
+}
+.graficos{ margin-top:18px; display:grid; gap:22px }
+.gcard h3{
+  margin:0 0 7px; font:500 10.5px/1 var(--mono); letter-spacing:.09em;
+  color:var(--fraco); text-transform:uppercase;
+}
+.u-select{ background:rgba(63,168,124,.15) }
+
+/* ------------------------------------------------------ alarmes ----- */
+.alarmes{ padding:22px 0 0; border-top:1px solid var(--linha) }
+.tabela{ margin-top:14px }
+.linha{
+  display:grid; grid-template-columns:150px 1fr auto; gap:14px;
+  padding:10px 0; border-bottom:1px solid var(--linha);
+  font-size:13.5px; align-items:baseline;
+}
+.linha .q{ font:400 12px var(--mono); color:var(--fraco) }
+.linha .o{ color:var(--vermelho); font-weight:500 }
+.linha .d{ font:400 12px var(--mono); color:var(--fraco) }
+.vazio{ color:var(--fraco); font-size:13.5px; padding:10px 0 }
+
+.rodape{
+  margin-top:30px; padding-top:16px; border-top:1px solid var(--linha);
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  font:400 11.5px var(--mono); color:var(--fraco);
+}
+
+/* ======================================================== celular ==== */
+@media (max-width:640px){
+  :root{ --gut:16px }
+  .hero{ grid-template-columns:1fr; gap:20px; padding:22px 0 }
+  .sump svg{ width:100px; height:142px }
+  .sump .n{ font-size:34px }
+  .leituras{ grid-template-columns:1fr }
+  .leitura{ padding:16px 0 }
+  .leitura + .leitura{ border-left:none; border-top:1px solid var(--linha) }
+  .linha{ grid-template-columns:1fr auto; row-gap:3px }
+  .linha .q{ grid-column:1 / -1 }
+  .janelas{ margin-left:0; width:100%; }
+  .janelas button{ flex:1 }
+}
