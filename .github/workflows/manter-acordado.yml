@@ -1,1 +1,26 @@
+# Mantém o projeto gratuito do Supabase acordado.
+#
+# O plano gratuito pausa um projeto que passa cerca de uma semana sem
+# movimento no banco. Enquanto o ESP32 ainda está em teste e não grava todo
+# dia, este agendamento cobre o buraco.
+#
+# ATENÇÃO: o GitHub desativa agendamentos em repositório público que fica
+# ~60 dias sem commits, e avisa por e-mail antes. Se isso acontecer, basta
+# abrir a aba Actions e reativar o fluxo num clique.
 
+name: Manter o Supabase acordado
+
+on:
+  schedule:
+    # 09:17 UTC = 06:17 em Brasília. Minuto quebrado de propósito: horário
+    # redondo é quando todo mundo agenda, e o GitHub atrasa a fila.
+    - cron: '17 9 * * *'
+  workflow_dispatch:        # permite rodar na mão, pelo botão
+
+jobs:
+  bater:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bater ponto no Supabase
+        run: node .github/bater.js
