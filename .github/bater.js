@@ -41,4 +41,3 @@ if (!SUPABASE_URL || SUPABASE_URL.includes('SEUPROJETO')) {
   }
   console.log('ok:', txt);
 })();
-
