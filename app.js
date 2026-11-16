@@ -422,4 +422,32 @@ function escapar(s) {
     (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
+/* ====================================================== batimento ===== */
+/*  Mantém o projeto gratuito do Supabase acordado. Roda logado ou não: só
+    abrir a página já conta como movimento no banco.
+
+    O que ele NÃO resolve: página fechada. Para isso existe o agendamento no
+    GitHub Actions, que bate uma vez por dia sem depender de ninguém.      */
+
+async function baterPonto() {
+  if (!C.BATIMENTO_MIN) return;
+  const { data, error } = await sb.rpc('bater_ponto', { p_origem: 'web' });
+  if (error) { console.warn('[ATO] batimento falhou:', error.message); return; }
+
+  const r = Array.isArray(data) ? data[0] : data;
+  if (!r) return;
+  const e = $('rodape-batimento');
+  if (e) {
+    const q = new Date(r.ultimo);
+    e.textContent = `batimento ${r.total} · ${q.toLocaleString('pt-BR')}`;
+    e.title = 'Grava um carimbo de tempo para o Supabase não pausar o '
+            + 'projeto por inatividade.';
+  }
+}
+
+baterPonto();
+if (C.BATIMENTO_MIN) {
+  setInterval(baterPonto, Math.max(C.BATIMENTO_MIN, 5) * 60 * 1000);
+}
+
 iniciar();

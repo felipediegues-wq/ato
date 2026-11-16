@@ -18,7 +18,7 @@ window.ATO = {
   SUPABASE_ANON: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3a3NtemFiZW52ZG9pamV5d3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NjM2MjYsImV4cCI6MjEwNjUzOTYyNn0.dzO1vH7dVClC2ejVTtyRPJgoN-WXsN5ci6nRe-ydumo',
 
   /* Nome mostrado no topo. */
-  TITULO: 'Aquário  72 L',
+  TITULO: 'Aquário 72 L',
 
   /* ---- limiares do sump, só para desenhar as marcas ----
      Use os mesmos valores que estão na página do ATO, aba Nível. Eles não
@@ -46,5 +46,16 @@ window.ATO = {
   ATRASO_GRAVE:  30,   // minutos — fica vermelho e avisa alto
 
   /* De quanto em quanto tempo a página se atualiza sozinha, em segundos. */
-  RECARGA: 60
+  RECARGA: 60,
+
+  /* ---- batimento ----
+     Enquanto esta página estiver aberta, ela grava um carimbo de tempo no
+     banco de tempos em tempos. Serve para o projeto gratuito do Supabase não
+     ser pausado por inatividade.
+
+     Atenção: isto só funciona com a página ABERTA. Quem garante o batimento
+     com tudo fechado é o GitHub Actions — veja .github/workflows/.
+
+     0 desliga.                                                           */
+  BATIMENTO_MIN: 10
 };
