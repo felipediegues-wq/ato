@@ -135,13 +135,13 @@ function desenharAgora(d) {
   const cont = $('contato'), txt = $('contato-txt');
   cont.className = 'contato ' +
     (min >= C.ATRASO_GRAVE ? 'grave' : min >= C.ATRASO_AVISO ? 'aviso' : 'bom');
-  txt.textContent = min < 1 ? 'agora mesmo'
-                  : min < 60 ? `há ${min} min`
-                  : `há ${Math.floor(min / 60)} h ${min % 60} min`;
+
+  const atras = decorrido(min);
+  txt.textContent = atras ? 'há ' + atras : 'agora mesmo';
 
   if (min >= C.ATRASO_GRAVE) {
-    avisar(`O ESP32 não grava há ${txt.textContent}. Os valores abaixo são `
-         + `dessa hora, não de agora. Confira a energia, o Wi-Fi e a página `
+    avisar(`O ESP32 não grava há ${atras}. Os valores abaixo são dessa `
+         + `época, não de agora. Confira a energia, o Wi-Fi e a página `
          + `local do ATO.`);
   } else {
     esconderAviso();
@@ -185,6 +185,24 @@ function desenharAgora(d) {
   if (temAlarme) avisar('Alarme ativo: ' + d.alarme);
 
   $('rodape-atual').textContent = 'leitura de ' + ts.toLocaleString('pt-BR');
+}
+
+/** Quanto tempo faz, em palavras. Devolve null para "agora mesmo".
+
+    Sem isto, uma parada de mês e meio aparece como "1077 h 19 min", que
+    ninguém consegue ler. A unidade tem de acompanhar o tamanho da espera. */
+function decorrido(min) {
+  if (min < 1) return null;
+  if (min < 60) return `${min} min`;
+  if (min < 48 * 60) {
+    const h = Math.floor(min / 60);
+    const m = min % 60;
+    return m ? `${h} h ${m} min` : `${h} h`;
+  }
+  const dias = Math.floor(min / 1440);
+  if (dias < 60) return `${dias} dias`;
+  const meses = Math.floor(dias / 30);
+  return meses < 24 ? `${meses} meses` : `${Math.floor(dias / 365)} anos`;
 }
 
 function num(x) {
